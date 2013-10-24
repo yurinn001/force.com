@@ -1,0 +1,211 @@
+<apex:page >
+<script type="text/javascript" src="/js/functions.js"></script>
+<script src="/soap/ajax/17.0/connection.js"></script>
+<script src="/soap/ajax/17.0/apex.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+function validate(){
+    sforce.connection.init("{!$API.Session_ID}", "{!$Api.Partner_Server_URL_140}");
+    // 保存時に呼ばれる検証処理
+    var ok2Go = true; // この値がtrueのままであれば保存
+
+    // 1. 未入力/未選択のチェック
+    var ps = document.getElementById("posSelector");
+    if (ps.options.length != 0){
+        var posId = ps.options[ps.selectedIndex].value;
+    }
+
+    // a. posIdが選択されているか？
+    if ((posId == null)||(posId == "")) {
+        alert("Positionを指定してください");
+        ok2Go = false;
+    }
+    // b. その他必須項目のチェック
+    var ln = document.forms["refForm"].elements["lastname"].value; 
+    if ((ln == "")||(ln == null)){
+        alert("Last Nameを入力してください");
+        ok2Go = false;
+    }
+    var email = document.forms["refForm"].elements["email"].value; 
+    if ((email == "")||(email == null)){
+        alert("Emailを入力してください");
+        ok2Go = false;
+    }
+
+    if (ok2Go) {
+        save(posId);
+    } else {
+        return false;
+    } 
+}
+
+function doDescribeGlobal(){
+    try{
+        var dgResults = sforce.connection.describeGlobal();
+    } catch (e) {
+        sforce.debug.open();
+        sforce.debug.log(e);
+    }
+
+    return dgResults;
+}
+
+function doDescribeSObject(entity){
+    try{
+        var dso = sforce.connection.describeSObject(entity);
+    }catch (e) {
+        sforce.debug.open();
+        sforce.debug.log(e);
+    }
+    return dso;
+}
+
+function clearSelect(name){
+    // 引数に与えられた要素の選択肢を削除
+    var sel = document.getElementById(name);
+
+    while (sel.length > 0){
+        sel.remove(0);
+    }
+}
+
+function deptChanged(department){
+    // Departmentを選択した際、適切なPositionの選択肢（posSelectorリストボックス）を生成
+    sforce.connection.init("{!$API.Session_ID}", "{!$Api.Partner_Server_URL_140}");
+    
+    // 1. Position選択のリストボックスをクリア
+    clearSelect("posSelector");
+
+    // 2. 選択しているDepartmentでOpenなPositionを取得するクエリ
+    var qStr = "select Id, Name, Location__c, Department__c, Type__c, Status__c from Position__c where Status__c='Open' and Department__c = '" + department + "'";
+    try{ 
+        var queryResults = sforce.connection.query(qStr); 
+        if (queryResults != null){ 
+            if (queryResults.size > 0){ 
+                var records = queryResults.getArray('records'); 
+            }
+        } 
+    } catch (e){ 
+        sforce.debug.open();
+        sforce.debug.log(e);
+    } 
+
+    // 3. 取得したPositoinレコードをループで取り出し、posSelectorを構築
+    var ps = document.getElementById("posSelector");
+    if (records != null){
+        for (var i=0; i<records.length; i++) {
+            var optNew = document.createElement('option');
+            optNew.value = records[i].Id;
+            optNew.text = records[i].Name + " : " + records[i].Location__c + " : " + records[i].Type__c;
+            try {
+                ps.add(optNew, null); // 標準の記述（IEでは動作しない）
+            
+            } catch(ex) {
+                ps.add(optNew); // IEのみ
+            }
+        }
+    }
+}
+
+function save(posId){
+    // Apexで作成したカスタムWebサービスsubmitEmployeeReferralを使用して、Job Application（と、必要に応じてCandidate)を作成
+    var candidate = new sforce.SObject("Candidate__c");
+    candidate.First_Name__c = document.forms["refForm"].elements["firstname"].value; 
+    candidate.Last_Name__c = document.forms["refForm"].elements["lastname"].value; 
+    candidate.Phone__c = document.forms["refForm"].elements["phone"].value; 
+    candidate.Mobile__c = document.forms["refForm"].elements["mobile"].value; 
+    candidate.Email__c = document.forms["refForm"].elements["email"].value; 
+
+    // Webサービスの呼び出し
+    try {
+        var success = sforce.apex.execute("CandidateKeyWebService","submitEmployeeReferral",{a:posId,b:candidate});
+
+        if (success != null) {
+            if (success == "true") {
+                document.body.innerHTML = "<h1>ありがとうございます。社員紹介の登録が完了しました。</h1><br/><br/><br/><br/>";
+            } else { 
+                document.body.innerHTML = "<h1>社員紹介の登録ができません。後ほど試してください。</h1><br/><br/><br/><br/>";
+            }
+        } else { 
+            sforce.debug.trace = true; 
+        }
+    } catch(e) {
+        sforce.debug.trace = true;
+        sforce.debug.open();
+        sforce.debug.log(e);
+    }
+}
+</script>
+
+<form id="refForm" name="refForm">
+    <table ID="Table1">
+        <tr>
+            <th colspan="2">
+                Department</th><th colspan="2">Open Positions</th>
+        </tr>
+
+        <tr>
+            <td>Choose:</td>
+            <td>
+                <select id="deptSelector" type="select-one" size="1" NAME="deptSelector" onchange="javascript:deptChanged(this.options[this.selectedIndex].text);">
+                    <option value="none">-- None --</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="IT">IT</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Support">Support</option>
+                    <option value="Sales">Sales</option>
+                </select>
+            </td>
+            <td>Choose:</td>
+            <td>
+                <select id="posSelector" NAME="posSelector" type="select-one" size="1"></select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">&nbsp;<br /></td>
+        </tr>
+            <td colspan="1"><h3>Candidate Info:</h3></td>
+            <td colspan="3">&nbsp;</td>
+        <tr>
+        </tr>
+
+
+
+    <!-- Candidate情報入力フォーム -->
+    </table>
+    
+    <table id="candidate">
+        <tr>
+            <td>First Name:</td><td><input type="text" id="firstname" /></td><td>Phone:</td><td><input type="text" id="phone" /></td>
+        </tr>
+        <tr>
+            <td><font color="#ff2222">Last Name:</font></td>
+            <td><input type="text" id="lastname" /></td>
+            <td>Mobile:</td>
+            <td><input type="text" id="mobile" /></td>
+        </tr>
+        <tr>
+            <td><font color="#ff2222">Email:</font></td>
+            <td><input type="text" id="email" /></td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Resume:</td><td>
+            <input type="file" id="resume" name="resume" /></td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4"><br /></td>
+        </tr>
+
+    <!-- the next </td> is the end of the element in which I create the Candidate tabble-->
+
+    <table cellpadding="0" cellspacing="0" border="0" ID="Table2">
+        <tr>
+            <td class="pbTitle"><img src="/s.gif" alt="" width="1" height="1" class="minWidth" title="" />&nbsp;</td>
+            <td class="pbButtonb"><input value=" Save " class="btn" type="button" title="Save" name="save" onclick='javascript:validate();' ID="Button1" /></td>
+        </tr>
+    </table>
+    </table>
+</form>
+</apex:page>

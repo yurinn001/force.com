@@ -1,0 +1,114 @@
+<apex:page sidebar="false" showHeader="true">
+<apex:sectionHeader title="Apexサンプルコード" help="http://www.salesforce.com/us/developer/docs/apexcode/index.htm" />
+<!--
+<apex:pageBlock title="Force.comでの開発">
+ <apex:pageblockSection title="Force.comでの開発(DEV551)" columns="2" id="module0">
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S84.txt')}" target="_blank">演習4-1: 選択するメタデータ</apex:outputLink>
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S92.txt')}" target="_blank">スライド92: スキーマエクスプローラの操作</apex:outputLink>
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S96.txt')}" target="_blank">スライド96: Execute Anonymous</apex:outputLink>
+　<script>twistSection(document.getElementById("{!$Component.module0}").childNodes[0].childNodes[0]);</script>
+ </apex:pageblockSection>
+</apex:pageBlock >
+<apex:pageBlock title="Foce.com Code（Apex）-DEV541" >
+-->
+<apex:pageBlock >
+ <apex:pageblockSection title="Force.comでの開発(DEV551)" columns="1" id="module0">
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S84.txt')}" target="_blank">演習4-1: 選択するメタデータ</apex:outputLink>
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S92.txt')}" target="_blank">スライド92: スキーマエクスプローラの操作</apex:outputLink>
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV551/S96.txt')}" target="_blank">スライド96: Execute Anonymous</apex:outputLink>
+　<script>twistSection(document.getElementById("{!$Component.module0}").childNodes[0].childNodes[0]);</script>
+ </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール1：Apexの紹介" columns="1" id="module1">
+  <c:apexLink sNo="18" desc="Apexサンプル" />
+　<script>twistSection(document.getElementById("{!$Component.module1}").childNodes[0].childNodes[0]);</script>
+ </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール2：データ型とロジック" columns="1" id="module2">
+  <c:apexLink sNo="53" desc="Enum型" />
+  <c:apexLink sNo="54-" desc="sObject型" />
+  <c:apexLink sNo="59-" desc="コレクション：List" />
+  <c:apexLink sNo="64-" desc="コレクション：Set" />
+  <c:apexLink sNo="68" desc="コレクション：Map" />
+  <c:apexLink sNo="71-" desc="制御文" />
+  <c:apexLink sNo="77" desc="System.debug()" />
+　<script>twistSection(document.getElementById("{!$Component.module2}").childNodes[0].childNodes[0]);</script>
+ </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール3：マルチテナント環境でのビジネスロジックの開発" columns="1" id="module3">
+  <c:apexLink sNo="86" desc="仮想クラス" />
+  <c:apexLink sNo="95" desc="ガバナ制限の例" />
+  <c:apexLink sNo="100" desc="標準クラス：String" />
+  <c:apexLink sNo="101" desc="標準クラス：UserInfo" />
+  <c:apexLink sNo="102" desc="標準クラス：System" />
+  <c:apexLink sNo="103" desc="標準クラス：Limits" />
+  <c:apexLink sNo="108" desc="例外処理" />
+  <c:apexLink sNo="115" desc="with sharing" />
+　<script>twistSection(document.getElementById("{!$Component.module3}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール4：データベース" columns="1" id="module4">
+  <c:apexLink sNo="122-" desc="sObject" />
+  <c:apexLink sNo="130-" desc="SOQL" />
+  <c:apexLink sNo="136" desc="SOQL For ループ" />
+  <c:apexLink sNo="137-" desc="SOQL キーワード" />
+  <c:apexLink sNo="142-" desc="SOQL リレーション" />
+  <c:apexLink sNo="155-" desc="SOSL" />
+  <c:apexLink sNo="160" desc="DML" />
+  <c:apexLink sNo="163-" desc="DML：SaveResult" />
+  <c:apexLink sNo="166-" desc="DML：実行例" />
+  <c:apexLink sNo="169-" desc="DML：ループ" />
+  <c:apexLink sNo="175" desc="DML：セーブポイント" />
+　<script>twistSection(document.getElementById("{!$Component.module4}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール5：Apexトリガ" columns="1" id="module5">
+  <c:apexLink sNo="200-" desc="トリガ" />
+　<script>twistSection(document.getElementById("{!$Component.module5}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール6：テスト" columns="1" id="module6">
+  <c:apexLink sNo="221" desc="テスト対象のトリガ" />
+  <c:apexLink sNo="230-" desc="テストクラス、テストメソッドの記述形式" />
+  <c:apexLink sNo="235-" desc="テストクラスの例" />
+  <c:apexLink sNo="241-" desc="テストデータの作成" />
+  <c:apexLink sNo="246-" desc="ガバナ制限、レコード共有のテスト" />
+　<script>twistSection(document.getElementById("{!$Component.module6}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール7：配置" columns="1" id="module7">
+  <c:apexLink sNo="262" desc="移行ツール" />
+　<script>twistSection(document.getElementById("{!$Component.module7}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール8：ApexとWeb サービス" columns="1" id="module8">
+  <c:apexLink sNo="271" desc="@futureアノテーション" />
+  <c:apexLink sNo="275" desc="インバウンドSOAP Webサービス" />
+  <c:apexLink sNo="283" desc="アウトバウンドSOAP Webサービス" />
+  <c:apexLink sNo="292" desc="インバウンドREST Webサービス" />
+  <c:apexLink sNo="296" desc="RESTリクエストの例" />
+  <c:apexLink sNo="299" desc="アウトバウンドREST Webサービス" />
+  <c:apexLink sNo="303" desc="Webサービスコールアウトのテスト(1)" />
+  <c:apexLink sNo="304" desc="Webサービスコールアウトのテスト(2)" />
+　<script>twistSection(document.getElementById("{!$Component.module8}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール9：ApexとE-mail" columns="1" id="module9">
+  <c:apexLink sNo="311-" desc="メールの受信・送信" />
+  <c:apexLink sNo="321" desc="メールハンドラクラスのデバッグ" />
+  <c:apexLink sNo="331" desc="メール送信・まとめ" />
+　<script>twistSection(document.getElementById("{!$Component.module9}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+
+ <apex:pageblockSection title="モジュール10：高度なトピック" columns="1" id="module10">
+  <c:apexLink sNo="343" desc="動的Apex" />
+  <c:apexLink sNo="351" desc="バッチApex" />
+  <c:apexLink sNo="365" desc="カスタム設定" />
+<!--
+  <c:apexLink sNo="XX" desc="YYY" />
+-->
+　<script>twistSection(document.getElementById("{!$Component.module10}").childNodes[0].childNodes[0]);</script>
+  </apex:pageblockSection>
+ 
+</apex:pageBlock>
+</apex:page>

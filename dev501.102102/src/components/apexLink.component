@@ -1,0 +1,10 @@
+<apex:component >
+ <apex:attribute name="sNo" description="スライド番号" type="String" required="true" />
+ <apex:attribute name="desc" description="説明" type="String" required="true" />
+<apex:pageBlockSection > 
+ <apex:pageBlockSectionItem >
+  <apex:outputlabel >スライド{!sNo}：</apex:outputlabel>
+  <apex:outputLink value="{!URLFOR($Resource.DEV501, 'Samples/DEV541/S' + sNo + '.txt')}" target="_blank">{!desc}</apex:outputLink>
+ </apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+</apex:component>
